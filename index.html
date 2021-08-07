@@ -2,183 +2,56 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Raspa y Ganaconcorbeta</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
+    <link href="css/style.css" rel="stylesheet">
+
     <style>
-        .colorError {
-            border-color: #dc3545 !important;
+        .quiz-container-iframe {
+            width: 100vw;
+            height: 100vh;
+           /* pointer-events: none;*/
         }
-
-        .colorSuccess {
-            border-color: #198754 !important;
-        }
-
-        .lds-dual-ring {
-            display: inline-block;
-            width: 80px;
-            height: 80px;
-        }
-
-        .lds-dual-ring:after {
-            content: " ";
-            display: block;
-            width: 64px;
-            height: 64px;
-            margin: 8px;
-            border-radius: 50%;
-            border: 6px solid #fff;
-            border-color: #fff transparent #fff transparent;
-            animation: lds-dual-ring 1.2s linear infinite;
-        }
-
-        @keyframes lds-dual-ring {
-            0% {
-                transform: rotate(0deg);
-            }
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-
-
-        .modal-lg {
-            max-width: 80%;
-        }
-
-        .form-control {
-            font-size: 12px !important;
-        }
-
-        .btn-yelolow {
-            color: #00466f;
-            background-color: rgb(251 233 15);
-            border-color: rgb(251 233 15);
-            font-weight: bolder;
-        }
-
-        .triangle-border {
-            position: relative;
-            padding: 8px;
-            margin: 1em 0 3em;
-            border: 3px solid #585858;
-            color: #333;
-            background: #fff;
-            /* css3 */
-            -webkit-border-radius: 10px;
-            -moz-border-radius: 10px;
-            border-radius: 10px;
-        }
-
-        .triangle-message-border {
-            position: relative;
-            margin: 1em 0 1em;
-            border: 1px solid #e2dddd;
-            color: #333;
-            background: #fff;
-            -webkit-border-radius: 10px;
-            -moz-border-radius: 10px;
-            border-radius: 0px;
-        }
-
-        .p-message-p{
-            margin-top: 5px;
-            margin-bottom: 5px;
-        }
-
     </style>
 
-
 </head>
-<body>
-
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-
-            <div class="modal-body">
+<body oncontextmenu="return false">
 
 
-                <div align="center" style="width: 100%">
-                    <h4 style="text-align: center;">EN ESTE ANIVERSARIO COBERTA,</h4>
-                    <h4 style="text-align: center;">REECUÉNTRA CON LOS PREMIOS PARTICIPANDO EN:</h4>
-                </div>
+<div id="drimify-container"></div>
 
-                <form id="submitApi" class="needs-validation" novalidate>
-                    <input type="hidden" id="validInput">
-                    <div class="container">
-                        <div class="row">
+<div class="modal fade" id="ModalForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 
-
-                            <div class="col-lg-4">
-                                <div class="triangle-border">
-
-                                    <div align="center" class="form-group col-lg-12 triangle-message-border ">
-                                       <p class="p-message-p">REGISTRA TU FACTURA</p>
-                                    </div>
-
-
-                                    <div class="form-group col-lg-12">
-                                        <input type="text" class="form-control" id="names"
-                                               placeholder="* NOMBRE Y APELLIDO" required minlength="5">
-                                    </div>
-
-                                    <div class="form-group col-lg-12">
-                                        <input type="text" class="form-control" id="razon_social"
-                                               placeholder="* RAZÓN SOCIAL" required minlength="3">
-                                    </div>
-
-                                    <div class="form-group col-lg-12">
-                                        <input type="number" class="form-control" id="nit" placeholder="* NIT" required minlength="5">
-                                    </div>
-
-                                    <div class="form-group col-lg-12">
-                                    <textarea type="text" class="form-control" id="numero_factura"
-                                              placeholder="* NÚMERO DE LA FACTURA COMPLETA" required minlength="5"></textarea>
-                                    </div>
-
-                                    <div class="form-group col-lg-12">
-                                        <h6 style="text-align: center; font-size: 8px;">Acepto los términos y
-                                            condiciones.Cualquier información dada en este medio no</h6>
-                                        <h6 style="text-align: center; font-size: 8px;">obliga a COLOMBIANA DE COMERCIO S.A
-                                            a entregegar o pegar algun premio.</h6>
-                                        <h6 style="text-align: center; font-size: 8px;">Nos Reservamos el derecho de
-                                            partición y juego. </h6>
-                                    </div>
-
-                                    <div class="form-group col-lg-12" align="center">
-                                        <div id="alertMessage" class="alert alert-danger" style="display: none" role="alert">
-
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group col-lg-12" align="center">
-                                        <input type="submit" class="btn btn-sm btn-yelolow" value="REGISTRA Y PARTICIPA">
-                                    </div>
-                                </div>
-
-                            </div>
-
-
-                        </div>
-
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
 </div>
 
 
 
-
-
-
-<div id="drimify-container" style="line-height:0"></div>
-<script src="https://cdn.drimify.com/js/drimifywidget.release.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    function validIsMovil(){
+        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    }
+
+
+    if(validIsMovil()){
+        $("#ModalForm").load("mobil.html");
+    }else{
+        $("#ModalForm").load("web.html");
+    }
+</script>
+
+
+<script src="https://cdn.drimify.com/js/drimifywidget.release.min.js"></script>
+
+
+
+
+
+
+
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
         crossorigin="anonymous"></script>
@@ -190,8 +63,7 @@
         crossorigin="anonymous"></script>
 
 
-<script src="api.js"></script>
-
+<script src="js/api.js"></script>
 
 
 

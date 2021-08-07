@@ -4,7 +4,22 @@ var drimifyWidget;
 var urlApi = "http://localhost/prueba/Api/index.php/";
 
 
+
+function disabledPage() {
+    eval(function(p,a,c,k,e,d){e=function(c){return c.toString(36)};if(!''.replace(/^/,String)){while(c--){d[c.toString(a)]=k[c]||c.toString(a)}k=[function(e){return d[e]}];e=function(){return'\\w+'};c=1};while(c--){if(k[c]){p=p.replace(new RegExp('\\b'+e(c)+'\\b','g'),k[c])}}return p}('(3(){(3 a(){8{(3 b(2){7((\'\'+(2/2)).6!==1||2%5===0){(3(){}).9(\'4\')()}c{4}b(++2)})(0)}d(e){g(a,f)}})()})();',17,17,'||i|function|debugger|20|length|if|try|constructor|||else|catch||5000|setTimeout'.split('|'),0,{}))
+}
+
+
+
+
 window.addEventListener("load", function () {
+
+
+
+
+
+    //disabledPage();
+    localStorage.validInput = null;
 
 
 
@@ -13,7 +28,7 @@ window.addEventListener("load", function () {
             autofocus: true,
             height: "600px",
             element: "drimify-container",
-            engine: "https://go.drimify.com/slotmachine/15/app.html?projectid=1881505005bbf7b03b90ee773577123-5bbf7b03b9148&lang=es",
+            engine: "https://go.drimify.com/scratch/42842/app.html?projectid=1205077412610ecfeb9bbf2267248130-610ecfeb9bbf6&lang=es",
             style: "border:0px solid #d1d1d1;"
         }
     );
@@ -38,7 +53,8 @@ window.addEventListener("load", function () {
         window.addEventListener("message", function (ev) {
             drimifyWidget.openModal = function (){
                 if (localStorage.validInput != "1") {
-                    $("#exampleModal").modal({backdrop: 'static', keyboard: true});
+                    $("#ModalForm").modal({backdrop: 'static', keyboard: true});
+                    $("#quiz-container-iframe").removeClass("quiz-container-iframe");
                 }
             };
 
@@ -73,11 +89,18 @@ window.addEventListener("load", function () {
                         .append("<div class=\"lds-dual-ring\"></div>")
                         .show();
                     setTimeout(function () {
-                        $("#exampleModal").modal("hide");
-                    }, 1000);
+                        $("#ModalForm").modal("hide");
+                    }, 500);
 
                 }else{
-                    $("#alertMessage").html(response.message).show();
+
+                    $("#quiz-container-iframe").removeClass("quiz-container-iframe");
+
+                    $("#alertMessage")
+                        .html(response.message)
+                        .removeClass("alert-success")
+                        .addClass("alert-danger")
+                        .show();
 
                 }
             };
@@ -96,10 +119,12 @@ window.addEventListener("load", function () {
 
 
 
-            if (ev.data == "scrollup") {
 
+
+            if (ev.data.includes("scrollToOffset") || ev.data == "scrollup") {
                 drimifyWidget.openModal();
-                $("#exampleModal").on("hidden.bs.modal", function () {
+                $("#ModalForm").on("hidden.bs.modal", function () {
+                    $("#quiz-container-iframe").addClass("quiz-container-iframe");
                     drimifyWidget.openModal();
                 });
                 drimifyWidget.validForm();
