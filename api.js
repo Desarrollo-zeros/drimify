@@ -26,45 +26,24 @@ window.addEventListener("load", function () {
             factura.sessionId = data.credientials.sessionID
             factura.data = data;
             localStorage.juegoFactura = JSON.stringify(factura);
-
             localStorage.validInput = null;
-
             var url = urlApi+'facturacion/save';
-            fetch(url, {
-                method: 'POST', // or 'PUT'
-                body: JSON.stringify(factura), // data can be `string` or {object}!
-                headers:{
-                    'Content-Type': 'application/json'
-                }
-            }).then(res => res.json())
-                .catch(error => console.error('Error:', error))
-                .then(response => {
-                    console.log(response)
-                    if (response.success) {
-                    }else{
-                    }
-                });
-
-
-
+            sendPost(url, factura, function (response){
+                console.log(response)
+            });
         }
     };
 
     drimifyWidget.onReady = function (data) {
         window.addEventListener("message", function (ev) {
-            if (ev.data == "scrollup") {
-
+            drimifyWidget.openModal = function (){
                 if (localStorage.validInput != "1") {
                     $("#exampleModal").modal({backdrop: 'static', keyboard: true});
                 }
-
-                $("#exampleModal").on("hidden.bs.modal", function () {
-                    if (localStorage.validInput != "1") {
-                        $("#exampleModal").modal({backdrop: 'static', keyboard: true});
-                    }
-                });
+            };
 
 
+            drimifyWidget.validForm = function (){
                 var forms = document.getElementsByClassName('needs-validation');
                 // Loop over them and prevent submission
                 var validation = Array.prototype.filter.call(forms, function(form) {
@@ -78,60 +57,52 @@ window.addEventListener("load", function () {
                         }
                     }, false);
                 });
+            }
 
 
 
-                drimifyWidget.onclickApiFinBy = function (event) {
-                    event.preventDefault();
-                    let nFactura = $("#numero_factura").val();
-                    let nit = $("#nit").val();
+            drimifyWidget.processSuccessFind = function (response){
+                if (response.success) {
+                    localStorage.validInput = 1;
+                    localStorage.juegoFactura = JSON.stringify(response[0]);
+                    $("#validInput").val(1);
+                    $("#alertMessage")
+                        .removeClass("alert-danger")
+                        .addClass("alert-success")
+                        .html(response.message)
+                        .append("<div class=\"lds-dual-ring\"></div>")
+                        .show();
+                    setTimeout(function () {
+                        $("#exampleModal").modal("hide");
+                    }, 1000);
 
+                }else{
+                    $("#alertMessage").html(response.message).show();
 
+                }
+            };
 
-                    var url = urlApi+'facturacion';
-                    var data = {
-                        name: $("#names").val(),
-                        razonSocial : $("#razon_social").val(),
-                        nit : $("#nit").val(),
-                        numeroFactura : $("#numero_factura").val(),
-
-                    };
-
-                    fetch(url, {
-                        method: 'POST', // or 'PUT'
-                        body: JSON.stringify(data), // data can be `string` or {object}!
-                        headers:{
-                            'Content-Type': 'application/json'
-                        }
-                    }).then(res => res.json())
-                        .catch(error => console.error('Error:', error))
-                        .then(response => {
-
-                            if (response.success) {
-                                localStorage.validInput = 1;
-                                localStorage.juegoFactura = JSON.stringify(response[0]);
-                                $("#validInput").val(1);
-                                $("#alertMessage")
-                                    .removeClass("alert-danger")
-                                    .addClass("alert-success")
-                                    .html(response.message)
-                                    .append("<div class=\"lds-dual-ring\"></div>")
-                                    .show();
-
-                                setTimeout(function () {
-                                    $("#exampleModal").modal("hide");
-                                }, 1000);
-
-                            }else{
-                                $("#alertMessage").html(response.message).show();
-
-                            }
-                        });
-
-
+            drimifyWidget.onclickApiFinBy = function (event) {
+                event.preventDefault();
+                var url = urlApi+'facturacion';
+                var data = {
+                    name: $("#names").val(),
+                    razonSocial : $("#razon_social").val(),
+                    nit : $("#nit").val(),
+                    numeroFactura : $("#numero_factura").val(),
                 };
+                sendPost(url, data, drimifyWidget.processSuccessFind);
+            };
 
 
+
+            if (ev.data == "scrollup") {
+
+                drimifyWidget.openModal();
+                $("#exampleModal").on("hidden.bs.modal", function () {
+                    drimifyWidget.openModal();
+                });
+                drimifyWidget.validForm();
 
             }
         });
@@ -139,3 +110,27 @@ window.addEventListener("load", function () {
 
     };
 });
+
+
+function sendPost(url,data, callback = null, errorBack = null){
+
+    fetch(url, {
+        method: 'POST', // or 'PUT'
+        body: JSON.stringify(data), // data can be `string` or {object}!
+        headers:{
+            'Content-Type': 'application/json'
+        }
+    }).then(res => res.json())
+        .catch(error => {
+            if(errorBack){
+                errorBack(error);
+            }
+        })
+        .then(response => {
+            if(callback){
+                callback(response)
+            }
+        });
+
+}
+
